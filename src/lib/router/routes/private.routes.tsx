@@ -8,6 +8,7 @@ const privateRoutes: CustomRouteObject[] = [
     element: <Suspense></Suspense>,
     role: ["admin", "claimer", "approver", "finance"],
   },
+  
   // CLAIMS BY STATUS
   {
     path: "/claims/draft",
@@ -39,6 +40,7 @@ const privateRoutes: CustomRouteObject[] = [
     element: <Suspense></Suspense>,
     role: ["admin", "claimer"],
   },
+
   // CLAIM OPERATIONS
   {
     path: "/claims/create",

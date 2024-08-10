@@ -8,6 +8,7 @@ const adminRoutes: CustomRouteObject[] = [
     element: <Suspense></Suspense>,
     role: "admin",
   },
+
   // STAFF OPERATIONS
   {
     path: "/config/staff",
@@ -24,6 +25,7 @@ const adminRoutes: CustomRouteObject[] = [
     element: <Suspense></Suspense>,
     role: "admin",
   },
+
   // PROJECT OPERATIONS
   {
     path: "/config/project",
@@ -40,6 +42,7 @@ const adminRoutes: CustomRouteObject[] = [
     element: <Suspense></Suspense>,
     role: "admin",
   },
+  
   // UNAUTHORIZED STAFF OPERATIONS
   {
     path: "/config/pending-staff",
