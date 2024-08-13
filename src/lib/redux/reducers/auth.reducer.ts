@@ -1,19 +1,31 @@
 import { Staff } from '@/lib/schemas/staff.schema';
 import { Login, Register } from "@/lib/schemas/auth.schema";
-import { API_URI } from "@/lib/utils/axios.config";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { setError } from "./toast.reducer";
+import { API_URI } from './root.reducer';
 
 // LOGIN
 export const login = createAsyncThunk<Staff, Login, { rejectValue: string }>("auth/login", 
   async (formData, { dispatch, fulfillWithValue, rejectWithValue }) => {
     try {
-      const res = await API_URI.post("/login", formData);
+      const response = await fetch(`${API_URI}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-      return fulfillWithValue(res.data);
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Something went wrong");
+      }
+
+      return fulfillWithValue(data);
     } catch (error: any) {
-      dispatch(setError(error.response.data));
-      return rejectWithValue(error.response.data);
+      const errorMessage = error.message || "Unknown error";
+      dispatch(setError(errorMessage));
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -22,12 +34,24 @@ export const login = createAsyncThunk<Staff, Login, { rejectValue: string }>("au
 export const register = createAsyncThunk<void, Register, { rejectValue: string }>("auth/register", 
   async (formData, { dispatch, fulfillWithValue, rejectWithValue }) => {
     try {
-      const res = await API_URI.post("/register", formData);
+      const response = await fetch(`${API_URI}/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-      return fulfillWithValue(res.data);
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Something went wrong");
+      }
+
+      return fulfillWithValue(data);
     } catch (error: any) {
-      dispatch(setError(error.response.data));
-      return rejectWithValue(error.response.data);
+      const errorMessage = error.message || "Unknown error";
+      dispatch(setError(errorMessage));
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -48,8 +72,9 @@ const authSlice = createSlice({
     .addCase(login.rejected, (state) => {
       state.isLoading = false;
     })
-    .addCase(login.fulfilled, (state) => {
+    .addCase(login.fulfilled, (state, action: PayloadAction<Staff>) => {
       state.isLoading = false;
+      state.loggedInAs = action.payload;
     })
 
     // REGISTER STATES
