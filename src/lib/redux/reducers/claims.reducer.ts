@@ -1,18 +1,29 @@
 import { Claim } from "@/lib/schemas/claim.schema";
-import { API_URI } from "@/lib/utils/axios.config";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { setError } from "./toast.reducer";
+import { API_URI } from "./root.reducer";
 
 // GET ALL CLAIMS
 export const getAllClaims = createAsyncThunk<Claim[], void, { rejectValue: string }>("claims/getAllClaims", 
   async (_, { dispatch, fulfillWithValue, rejectWithValue }) => {
     try {
-      const res = await API_URI.get("/claims");
+      const response = await fetch(`${API_URI}/claims`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer`,
+        },
+      });
+      
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Something went wrong");
+      }
 
-      return fulfillWithValue(res.data);
+      return fulfillWithValue(data);
     } catch (error: any) {
-      dispatch(setError(error.response.data));
-      return rejectWithValue(error.response.data);
+      const errorMessage = error.message || "Unknown error";
+      dispatch(setError(errorMessage));
+      return rejectWithValue(errorMessage);
     }
   }
 );

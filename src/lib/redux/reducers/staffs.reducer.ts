@@ -1,18 +1,29 @@
 import { Staff } from "@/lib/schemas/staff.schema";
-import { API_URI } from "@/lib/utils/axios.config";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { setError } from "./toast.reducer";
+import { API_URI } from "./root.reducer";
 
 // GET ALL STAFFS
 export const getAllStaffs = createAsyncThunk<Staff[], void, { rejectValue: string }>("staffs/getAllStaffs", 
   async (_, { dispatch, fulfillWithValue, rejectWithValue }) => {
     try {
-      const res = await API_URI.get("/staffs");
+      const response = await fetch(`${API_URI}/staffs`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer`,
+        },
+      });
 
-      return fulfillWithValue(res.data);
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Something went wrong");
+      }
+
+      return fulfillWithValue(data);
     } catch (error: any) {
-      dispatch(setError(error.response.data));
-      return rejectWithValue(error.response.data);
+      const errorMessage = error.message || "Unknown error";
+      dispatch(setError(errorMessage));
+      return rejectWithValue(errorMessage);
     }
   }
 );
