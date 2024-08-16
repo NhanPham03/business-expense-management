@@ -17,14 +17,14 @@ export default function Sidebar({ showSidebar }: SidebarProps) {
   };
 
   return (
-    <div className={clsx("fixed flex flex-col w-[250px] h-screen top-0 z-50 bg-white shadow-md transition-all",
+    <div className={clsx("fixed flex flex-col w-[250px] h-screen top-0 z-50 bg-popover shadow-md lg:shadow-none duration-100 transition-all",
       {
         "-left-[250px] lg:left-0": !showSidebar,
-        "left-0 shadow-black shadow-lg lg:shadow-none": showSidebar,
+        "left-0": showSidebar,
       }
     )}>
       {/* Top SideBar logo */}
-      <div className="py-8">
+      <div>
         <Link to={"/"}>
           <Logo />
         </Link>
@@ -39,7 +39,7 @@ export default function Sidebar({ showSidebar }: SidebarProps) {
       <div className="hidden h-auto w-full grow rounded-md md:block"></div>
 
       {/* Log out button */}
-      <button className="flex w-full px-3 py-2 mb-2 justify-start items-center transition-all gap-2 hover:bg-[#F1F6F9] hover:shadow-md hover:pl-5"
+      <button className="flex w-full px-3 py-2 mb-2 justify-start items-center transition-all gap-2 hover:bg-primary-foreground text-foreground hover:shadow-md hover:pl-5"
         onClick={handleLogout}
       >
         <span className="text-xl"><IoLogOutOutline /></span>

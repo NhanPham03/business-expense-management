@@ -174,11 +174,7 @@ export default function NavLinks() {
       {navLinks.map((navLink) => navLink.section ? 
         ( // Generate Sections with SubLinks
           <li key={navLink.section}>
-            <Link to={"/claims"}
-              className="flex items-center px-4 pt-2 text-gray-400 border-t-2 font-bold text-sm uppercase"
-            >
-              <span>{navLink.section}</span>
-            </Link>
+            <span className="flex items-center px-4 pt-2 text-muted-foreground border-muted-foreground border-t-2 font-bold text-sm uppercase">{navLink.section}</span>
 
             <ul className="pl-4">
               {navLink.subLinks.map((subLink) => 
@@ -187,8 +183,8 @@ export default function NavLinks() {
                     <Link to={subLink.path}
                       className={clsx("flex w-full px-3 py-2 my-2 justify-start items-center transition-all gap-2 rounded-l-lg hover:pl-5",
                       {
-                        "bg-[#007AAC] text-white font-bold": pathname === subLink.path,
-                        "hover:bg-[#F1F6F9] hover:shadow-md text-black": pathname !== subLink.path,
+                        "bg-accent text-accent-foreground pl-5 font-bold": pathname === subLink.path,
+                        "hover:bg-muted hover:shadow-md text-foreground": pathname !== subLink.path,
                       }
                     )}>
                       <span className="text-xl">{subLink.icon}</span>
@@ -204,8 +200,8 @@ export default function NavLinks() {
             <Link to={navLink.path || ""}
               className={clsx("flex w-full px-3 py-2 my-2 justify-start items-center transition-all gap-2 rounded-l-lg hover:pl-5",
               {
-                "bg-[#007AAC] text-white font-bold": pathname === navLink.path,
-                "hover:bg-[#F1F6F9] hover:shadow-md text-black": pathname !== navLink.path,
+                "bg-accent text-accent-foreground pl-5 font-bold": pathname === navLink.path,
+                "hover:bg-muted hover:shadow-md text-foreground": pathname !== navLink.path,
               }
             )}>
               <span className="text-xl">{navLink.icon}</span>
