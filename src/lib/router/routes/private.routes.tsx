@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { CustomRouteObject } from "../Router";
+import { Status } from "@views/claims/ClaimsList";
 
 const Home = lazy(() => import("@views/Home"));
 
@@ -19,32 +20,32 @@ const privateRoutes: CustomRouteObject[] = [
   // CLAIMS BY STATUS
   {
     path: "/claims/draft",
-    element: <Suspense><ClaimsList status="draft" /></Suspense>,
+    element: <Suspense><ClaimsList status={Status.DRAFT} /></Suspense>,
     role: ["admin", "claimer"],
   },
   {
     path: "/claims/pending",
-    element: <Suspense><ClaimsList status="pending" /></Suspense>,
+    element: <Suspense><ClaimsList status={Status.PENDING} /></Suspense>,
     role: ["admin", "claimer", "approver"],
   },
   {
     path: "/claims/approved",
-    element: <Suspense><ClaimsList status="approved" /></Suspense>,
+    element: <Suspense><ClaimsList status={Status.APPROVED} /></Suspense>,
     role: ["admin", "claimer", "approver", "finance"],
   },
   {
     path: "/claims/paid",
-    element: <Suspense><ClaimsList status="paid" /></Suspense>,
+    element: <Suspense><ClaimsList status={Status.PAID} /></Suspense>,
     role: ["admin", "claimer", "finance"],
   },
   {
     path: "/claims/approved-paid",
-    element: <Suspense><ClaimsList status={["approved", "paid"]} /></Suspense>,
+    element: <Suspense><ClaimsList status={[Status.APPROVED, Status.PAID]} /></Suspense>,
     role: "approver"
   },
   {
     path: "/claims/rejected-cancelled",
-    element: <Suspense><ClaimsList status={["rejected", "cancelled"]} /></Suspense>,
+    element: <Suspense><ClaimsList status={[Status.REJECTED, Status.CANCELLED]} /></Suspense>,
     role: ["admin", "claimer"],
   },
 
