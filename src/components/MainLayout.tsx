@@ -1,12 +1,32 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import clsx from "clsx";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/lib/redux/redux.config";
+import { clearCookies, decodeToken, getCookie, isExpired } from "@/lib/utils/cookie.utils";
+import { setError } from "@/lib/redux/reducers/toast.reducer";
 
 export default function MainLayout() {
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const [showSidebar, setShowSidebar] = useState<boolean>(false);
 
+  useEffect(() => {
+    const token = getCookie("accessToken");
+    if (!token) return navigate("/login");
+  
+    const data = decodeToken(token);
+    if (data.exp && isExpired(data.exp)) {
+      dispatch(setError({ title: "Session Expired", description: "Please login again" }));
+      clearCookies();
+      return navigate("/login");
+    } else {
+      
+    }
+  }, []);
+  
   return (
     <div className="flex flex-row w-full min-h-screen bg-background">
       {/* Dims background when SideBar active */}

@@ -7,6 +7,8 @@ import { RiDraftLine } from "react-icons/ri";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import clsx from "clsx";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/redux/redux.config";
 
 const links = [
   // #region CLAIMER
@@ -151,23 +153,17 @@ const links = [
 
 export default function NavLinks() {
   const { pathname } = useLocation();
+  const { user } = useSelector((state: RootState) => state.auth);
   const [navLinks, setNavLinks] = useState<typeof links>([]);
-
-  const getNavLinks = (role: string) => {
-    const navLinks = [];
-
-    for (const link of links) {
-      if (link.role === role) {
-        navLinks.push(link);
-      }
-    }
-    return navLinks;
-  };
-
+  
   useEffect(() => {
-    const links = getNavLinks("admin");
-    setNavLinks(links);
-  }, []);
+    if (user.role) {
+      const filteredLinks = links.filter((link) => link.role === user.role);
+      setNavLinks(filteredLinks);
+    }
+  }, [user.role]);
+
+  if (!user.role) return null;
 
   return (
     <ul>

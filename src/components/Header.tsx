@@ -2,6 +2,8 @@ import { FiSidebar } from "react-icons/fi";
 import ReactLogo from "@/assets/react.svg";
 import { Button } from "./ui/button";
 import { ModeToggle } from "./ui/mode-toggle";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/redux/redux.config";
 
 interface HeaderProps {
   showSideBar: boolean;
@@ -9,6 +11,8 @@ interface HeaderProps {
 }
 
 export default function Header({ showSideBar, setShowSideBar }: HeaderProps) {
+  const { user } = useSelector((state: RootState) => state.auth);
+
   return (
     <div className="sticky w-full left-0 top-0 z-30">
       <div className="flex flex-row px-4 py-2.5 bg-popover justify-between items-center shadow-md">
@@ -22,9 +26,9 @@ export default function Header({ showSideBar, setShowSideBar }: HeaderProps) {
           <div className="flex items-center gap-5">
             {/* Mini profile */}
             <div className="flex flex-row gap-3">
-              <div className="flex flex-col text-popover-foreground text-end">
-                <h2 className="text-md font-bold">{"User"}</h2>
-                <span className="text-sm font-normal">{"Role"}</span>
+              <div className="flex flex-col my-auto text-popover-foreground text-end">
+                <h2 className="text-md font-bold">{user.name}</h2>
+                <span className="text-sm font-mono uppercase">{user.role}</span>
               </div>
 
               <button className="bg-background rounded-full focus:ring-4 focus:ring-gray-300"

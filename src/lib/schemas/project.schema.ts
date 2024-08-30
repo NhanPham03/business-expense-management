@@ -17,8 +17,12 @@ export interface Project {
 }
 
 const projectSchema = z.object({
-  name: z.string(),
-  code: z.string(),
+  name: z.string().min(1, {
+    message: "Name is required",
+  }),
+  code: z.string().min(1, {
+    message: "Code is required",
+  }),
   from: z.string().date(),
   to: z.string().date(),
   project_manager: z.string(),

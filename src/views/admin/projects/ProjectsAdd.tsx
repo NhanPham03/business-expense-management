@@ -2,9 +2,9 @@ import { Button } from "@/components/ui/button";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 
-export default function ProjectsDetails() {
+export default function ProjectsAdd() {
   const navigate = useNavigate();
-  
+
   return (
     <div className="flex flex-col p-4 rounded-lg bg-card shadow-lg">
       {/* Header */}
@@ -14,7 +14,7 @@ export default function ProjectsDetails() {
         >
           <IoIosArrowBack className="text-2xl" />
         </Button>
-        <h2 className="text-2xl font-bold">Project Details</h2>
+        <h2 className="text-2xl font-bold">Add Project</h2>
       </div>
     </div>
   );

@@ -9,13 +9,13 @@ import { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/redux/redux.config";
+import { createStaff } from "@/lib/redux/reducers/staffs.reducer";
 import { useNavigate } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
 
 export default function StaffsAdd() {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const [edit, setEdit] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
 
   const form = useForm<StaffSchema>({
@@ -32,7 +32,7 @@ export default function StaffsAdd() {
   });
 
   const onSubmit = (values: StaffSchema) => {
-    
+    dispatch(createStaff(values));
     setOpen(false);
   };
 
@@ -45,7 +45,7 @@ export default function StaffsAdd() {
         >
           <IoIosArrowBack className="text-2xl" />
         </Button>
-        <h2 className="text-2xl font-bold">Staff Details</h2>
+        <h2 className="text-2xl font-bold">Add Staff</h2>
       </div>
 
       <Form {...form}>

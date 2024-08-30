@@ -2,6 +2,7 @@ import { Claim } from "@/lib/schemas/claim.schema";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { setError } from "./toast.reducer";
 import { API_URI } from "./root.reducer";
+import { getCookie } from "@/lib/utils/cookie.utils";
 
 // GET ALL CLAIMS
 export const getAllClaims = createAsyncThunk<Claim[], void, { rejectValue: string }>("claims/getAllClaims", 
@@ -9,8 +10,10 @@ export const getAllClaims = createAsyncThunk<Claim[], void, { rejectValue: strin
     try {
       const response = await fetch(`${API_URI}/claims`, {
         method: "GET",
+        credentials: "include",
         headers: {
-          "Authorization": `Bearer`,
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${getCookie("accessToken")}`,
         },
       });
       
