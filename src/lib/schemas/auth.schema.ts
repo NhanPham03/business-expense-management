@@ -11,12 +11,12 @@ export interface Register {
   password: string;
 }
 
-const loginSchema = z.object({
+export const loginSchema = z.object({
   email: z.string().email(),
-  password: z.string(),
+  password: z.string().min(8, { message: "Password must be at least 8 characters" }),
 });
 
-const registerSchema = z.object({
+export const registerSchema = z.object({
   name: z.string(),
   email: z.string().email(),
   password: z.string(),

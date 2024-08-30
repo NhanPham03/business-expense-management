@@ -34,9 +34,11 @@ export default function ClaimsList({ status }: ClaimsListProps) {
     <div className="flex flex-col p-4 rounded-lg bg-card shadow-lg">
       {/* Header */}
       <div className="mb-4 text-card-foreground">
-        <h2 className="text-2xl font-bold mb-2">
-          {Array.isArray(status) ? status.join("/") : status}
-        </h2>
+        <div className="flex mb-3 justify-between items-center">
+          <h2 className="text-2xl font-bold mb-2">
+            {Array.isArray(status) ? status.join("/") : status}
+          </h2>
+        </div>
 
         <div className="flex justify-between items-center">
           <div>
