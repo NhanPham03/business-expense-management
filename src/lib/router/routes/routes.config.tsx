@@ -1,6 +1,7 @@
 import MainLayout from "@/components/MainLayout";
 import adminRoutes from "./admin.routes";
 import privateRoutes from "./private.routes";
+import errorRoutes from "./error.routes";
 
 const getRoutes = () => {
   return {
@@ -9,6 +10,7 @@ const getRoutes = () => {
     children: [
       ...privateRoutes,
       ...adminRoutes,
+      ...errorRoutes,
     ],
   };
 };

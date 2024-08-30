@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
 
 const Login = lazy(() => import("@views/auth/Login"));
@@ -8,15 +8,15 @@ const ResetPassword = lazy(() => import("@views/auth/ResetPassword"));
 const publicRoutes: RouteObject[] = [
   {
     path: "/login",
-    element: <Suspense><Login /></Suspense>,
+    element: <Login />,
   },
   {
     path: "/register",
-    element: <Suspense><Register /></Suspense>,
+    element: <Register />,
   },
   {
     path: "/reset-password",
-    element: <Suspense><ResetPassword /></Suspense>,
+    element: <ResetPassword />,
   },
 ];
 

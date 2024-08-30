@@ -1,71 +1,117 @@
 import { lazy, Suspense } from "react";
-import { CustomRouteObject } from "../Router";
+import ProtectedRoute from "../ProtectedRoute";
+import { RouteObject } from "react-router-dom";
 
 const AdminDashboard = lazy(() => import("@views/admin/AdminDashboard"));
 
 const StaffsList = lazy(() => import("@views/admin/staffs/StaffsList"));
-const StaffsCreate = lazy(() => import("@views/admin/staffs/StaffsCreate"));
+const StaffsAdd = lazy(() => import("@/views/admin/staffs/StaffsAdd"));
 const StaffsDetails = lazy(() => import("@views/admin/staffs/StaffsDetails"));
 
 const ProjectsList = lazy(() => import("@views/admin/projects/ProjectsList"));
-const ProjectsCreate = lazy(() => import("@views/admin/projects/ProjectsCreate"));
+const ProjectsAdd = lazy(() => import("@/views/admin/projects/ProjectsAdd"));
 const ProjectsDetails = lazy(() => import("@views/admin/projects/ProjectsDetails"));
 
 const PendingStaffsList = lazy(() => import("@views/admin/pending-staffs/PendingStaffsList"));
 const PendingStaffsDetails = lazy(() => import("@views/admin/pending-staffs/PendingStaffsDetails"));
 
-const adminRoutes: CustomRouteObject[] = [
+const adminRoutes: RouteObject[] = [
   // ADMIN DASHBOARD
   {
     path: "/admin/dashboard",
-    element: <Suspense><AdminDashboard /></Suspense>,
-    role: "admin",
+    element: (
+      <Suspense>
+        <ProtectedRoute element={<AdminDashboard />} 
+          allowedRoles={["admin"]}
+        />
+      </Suspense>
+    ),
   },
 
   // STAFF OPERATIONS
   {
     path: "/config/staff",
-    element: <Suspense><StaffsList /></Suspense>,
-    role: "admin",
+    element: (
+      <Suspense>
+        <ProtectedRoute element={<StaffsList />}
+          allowedRoles={["admin"]}
+        />
+      </Suspense>
+    ),
   },
   {
-    path: "/config/staff/create",
-    element: <Suspense><StaffsCreate /></Suspense>,
-    role: "admin",
+    path: "/config/staff/add",
+    element: (
+      <Suspense>
+        <ProtectedRoute element={<StaffsAdd />}
+          allowedRoles={["admin"]}
+        />
+      </Suspense>
+    ),
   },
   {
     path: "/config/staff/:staff_id",
-    element: <Suspense><StaffsDetails /></Suspense>,
-    role: "admin",
+    element: (
+      <Suspense>
+        <ProtectedRoute element={<StaffsDetails />} 
+          allowedRoles={["admin"]} 
+        />
+      </Suspense>
+    ),
   },
 
   // PROJECT OPERATIONS
   {
     path: "/config/project",
-    element: <Suspense><ProjectsList /></Suspense>,
-    role: "admin",
+    element: (
+      <Suspense>
+        <ProtectedRoute element={<ProjectsList />} 
+          allowedRoles={["admin"]} 
+        />
+      </Suspense>
+    ),
   },
   {
-    path: "/config/project/create",
-    element: <Suspense><ProjectsCreate /></Suspense>,
-    role: "admin",
+    path: "/config/project/add",
+    element: (
+      <Suspense>
+        <ProtectedRoute element={<ProjectsAdd />} 
+          allowedRoles={["admin"]} 
+        />
+      </Suspense>
+    ),
   },
   {
     path: "/config/project/:project_id",
-    element: <Suspense><ProjectsDetails /></Suspense>,
-    role: "admin",
+    element: (
+      <Suspense>
+        <ProtectedRoute element={<ProjectsDetails />} 
+          allowedRoles={["admin"]} 
+        />
+      </Suspense>
+    ),
   },
   
   // UNAUTHORIZED STAFF OPERATIONS
   {
     path: "/config/pending-staff",
-    element: <Suspense><PendingStaffsList /></Suspense>,
-    role: "admin",
+    element: (
+      <Suspense>
+        <ProtectedRoute element={<PendingStaffsList />} 
+          allowedRoles={["admin"]} 
+        />
+      </Suspense>
+    ),
   },
   {
     path: "/config/pending-staff/:staff_id",
-    element: <Suspense><PendingStaffsDetails /></Suspense>,
-    role: "admin",
+    element: (
+      <Suspense>
+        <ProtectedRoute element={<PendingStaffsDetails />} 
+          allowedRoles={["admin"]} 
+        />
+      </Suspense>
+    ),
   },
 ];
 

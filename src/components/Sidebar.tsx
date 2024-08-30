@@ -3,6 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import Logo from "@/components/shared/Logo";
 import NavLinks from "@/components/NavLinks";
 import { IoLogOutOutline } from "react-icons/io5";
+import { clearCookies } from "@/lib/utils/cookie.utils";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/lib/redux/redux.config";
+import { clearUserData } from "@/lib/redux/reducers/auth.reducer";
 
 interface SidebarProps {
   showSidebar: boolean;
@@ -10,9 +14,11 @@ interface SidebarProps {
 
 export default function Sidebar({ showSidebar }: SidebarProps) {
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleLogout = () => {
-    // localStorage.removeItem("userData");
+    clearCookies();
+    dispatch(clearUserData());
     navigate("/login");
   };
 
@@ -31,12 +37,12 @@ export default function Sidebar({ showSidebar }: SidebarProps) {
       </div>
 
       {/* Links by role */}
-      <div>
+      <div className="h-full">
         <NavLinks />
       </div>
 
       {/* Empty flex box */}
-      <div className="hidden h-auto w-full grow rounded-md md:block"></div>
+      <div className="hidden h-auto w-full grow md:block"></div>
 
       {/* Log out button */}
       <button className="flex w-full px-3 py-2 mb-2 justify-start items-center transition-all gap-2 hover:bg-primary-foreground text-foreground hover:shadow-md hover:pl-5"
