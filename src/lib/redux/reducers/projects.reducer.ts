@@ -2,6 +2,7 @@ import { Project } from "@/lib/schemas/project.schema";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { setError } from "./toast.reducer";
 import { API_URI } from "./root.reducer";
+import { getCookie } from "@/lib/utils/cookie.utils";
 
 // GET ALL PROJECTS
 export const getAllProjects = createAsyncThunk<Project[], void, { rejectValue: string }>("",
@@ -9,8 +10,10 @@ export const getAllProjects = createAsyncThunk<Project[], void, { rejectValue: s
     try {
       const response = await fetch(`${API_URI}/projects`, {
         method: "GET",
+        credentials: "include",
         headers: {
-          "Authorization": `Bearer`,
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${getCookie("accessToken")}`,
         },
       });
 

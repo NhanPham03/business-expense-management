@@ -1,11 +1,28 @@
-import { Staff } from '@/lib/schemas/staff.schema';
 import { Login, Register } from "@/lib/schemas/auth.schema";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { setError } from "./toast.reducer";
+import { setError, setMessage } from "./toast.reducer";
 import { API_URI } from './root.reducer';
+import { setCookie } from "@/lib/utils/cookie.utils";
+
+export enum Roles {
+  Claimer = "claimer",
+  Approver = "approver",
+  Finance = "finance",
+  Admin = "admin",
+}
+
+interface LoginSuccessResponse {
+  token: string,
+  user: {
+    id: string,
+    name: string,
+    department: string,
+    role: Roles,
+  },
+}
 
 // LOGIN
-export const login = createAsyncThunk<Staff, Login, { rejectValue: string }>("auth/login", 
+export const login = createAsyncThunk<LoginSuccessResponse, Login, { rejectValue: string }>("auth/login", 
   async (formData, { dispatch, fulfillWithValue, rejectWithValue }) => {
     try {
       const response = await fetch(`${API_URI}/login`, {
@@ -20,11 +37,13 @@ export const login = createAsyncThunk<Staff, Login, { rejectValue: string }>("au
       if (!response.ok) {
         throw new Error(data.message || "Something went wrong");
       }
-
+      setCookie("accessToken", data.token);
+      
+      dispatch(setMessage({ title: "Success", description: `Welcome back, ${data.user.name}` }));
       return fulfillWithValue(data);
     } catch (error: any) {
       const errorMessage = error.message || "Unknown error";
-      dispatch(setError(errorMessage));
+      dispatch(setError({ title: "Login Failed", description: errorMessage }));
       return rejectWithValue(errorMessage);
     }
   }
@@ -47,10 +66,11 @@ export const register = createAsyncThunk<void, Register, { rejectValue: string }
         throw new Error(data.message || "Something went wrong");
       }
 
+      dispatch(setMessage({ title: "Success", description: "Register successful"}));
       return fulfillWithValue(data);
     } catch (error: any) {
       const errorMessage = error.message || "Unknown error";
-      dispatch(setError(errorMessage));
+      dispatch(setError({ title: "Register Failed", description: errorMessage }));
       return rejectWithValue(errorMessage);
     }
   }
@@ -60,9 +80,21 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     isLoading: false,
-    loggedInAs: null as Staff | null,
+    user: {
+      id: null as string | null,
+      name: null as string | null,
+      department: null as string | null,
+      role: null as Roles | null,
+    }
   },
-  reducers: {},
+  reducers: {
+    clearUserData: (state) => {
+      state.user.id = null;
+      state.user.name = null;
+      state.user.department = null;
+      state.user.role = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
     // LOGIN STATES
@@ -72,9 +104,9 @@ const authSlice = createSlice({
     .addCase(login.rejected, (state) => {
       state.isLoading = false;
     })
-    .addCase(login.fulfilled, (state, action: PayloadAction<Staff>) => {
+    .addCase(login.fulfilled, (state, action: PayloadAction<LoginSuccessResponse>) => {
       state.isLoading = false;
-      state.loggedInAs = action.payload;
+      state.user = action.payload.user;
     })
 
     // REGISTER STATES
@@ -90,4 +122,5 @@ const authSlice = createSlice({
   },
 });
 
+export const { clearUserData } = authSlice.actions;
 export const authReducer = authSlice.reducer;
